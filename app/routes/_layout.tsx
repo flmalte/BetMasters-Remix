@@ -31,11 +31,11 @@ export default function _index() {
       className="flex flex-row"
       style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}
     >
-      <div className="bg-base-200 h-screen w-64">
-        <Link to="/" className="mx-auto my-8 p-5 text-green-600">
+      <div className="bg-base-200 menu h-screen w-64">
+        <Link to="/" className="p-5 text-green-600">
           Leagues
         </Link>
-        <ul className="menu">
+        <ul className="">
           {data.map((data) => (
             <li key={data.name}>
               <NavLink
@@ -45,6 +45,7 @@ export default function _index() {
                   isPending ? "" : isActive ? "active" : ""
                 }
               >
+                <img className="h-4" src={data.country_flag} />
                 {data.name}
               </NavLink>
             </li>
