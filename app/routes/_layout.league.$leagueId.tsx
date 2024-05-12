@@ -13,7 +13,17 @@ export const meta: MetaFunction = () => {
 export async function loader({ params }: LoaderFunctionArgs) {
   try {
     const response = await axios.get(
-      `https://betmasters.azurewebsites.net/fixturesWithOdds?bookmaker=27&future_games_only=false&games_with_bets_only=false&league=${params.leagueId}&season=2023`,
+      `https://betmasters.azurewebsites.net/fixturesWithOdds`,
+
+      {
+        params: {
+          bookmaker: 27,
+          future_games_only: true,
+          games_with_bets_only: true,
+          league: params.leagueId,
+          season: 2023,
+        },
+      },
     );
     console.log(response.data);
     return response.data;
@@ -51,7 +61,7 @@ interface MatchData {
   status_long: string;
   status_short: string;
   status_elapsed: string;
-  odds: string;
+  odds: string; // needs to be changed, can be string or obj
 }
 
 interface MatchComponentProps {
