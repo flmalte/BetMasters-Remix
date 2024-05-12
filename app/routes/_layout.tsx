@@ -34,7 +34,7 @@ export default function _index() {
         <Link to="/" className="p-5 text-xl text-green-600">
           Leagues
         </Link>
-        <ul className="">
+        <ul className="space-y-2">
           {data.map((data) => (
             <li key={data.name}>
               <NavLink
@@ -43,7 +43,11 @@ export default function _index() {
                   isPending ? "" : isActive ? "active" : ""
                 }
               >
-                <img className="h-4" src={data.country_flag} />
+                <img
+                  alt={`${data.country} flag`}
+                  className="h-4"
+                  src={data.country_flag}
+                />
                 {data.name}
               </NavLink>
             </li>

@@ -25,7 +25,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
         },
       },
     );
-    console.log(response.data);
+    /*console.log(response.data);*/
     return response.data;
   } catch (error) {
     console.error(error);
@@ -39,9 +39,11 @@ export default function _index() {
   return (
     <div>
       <p>League</p>
-      {data.map((data) => (
-        <MatchComponent key={data.fixture_id} data={data} />
-      ))}
+      <div className="space-y-2">
+        {data.map((data) => (
+          <MatchComponent key={data.fixture_id} data={data} />
+        ))}
+      </div>
     </div>
   );
 }
@@ -72,11 +74,19 @@ function MatchComponent({ data }: MatchComponentProps) {
   return (
     <div className="flex flex-row space-x-12">
       <div className="flex flex-row">
-        <img alt="Home team icon" className="h-4" src={data.home_team_icon} />
+        <img
+          alt={`${data.home_team} icon`}
+          className="h-4"
+          src={data.home_team_icon}
+        />
         <p>{data.home_team}</p>
       </div>
       <div className="flex flex-row">
-        <img alt="Away team icon" className="h-4" src={data.away_team_icon} />
+        <img
+          alt={`${data.away_team} icon`}
+          className="h-4"
+          src={data.away_team_icon}
+        />
         <p>{data.away_team}</p>
       </div>
     </div>
