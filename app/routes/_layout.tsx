@@ -1,7 +1,6 @@
 import { MetaFunction } from "@remix-run/node";
-import { Link, NavLink, Outlet } from "@remix-run/react";
+import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
 import axios from "axios";
-import { useLoaderData } from "react-router";
 
 export const meta: MetaFunction = () => {
   return [
@@ -31,8 +30,8 @@ export default function _index() {
       className="flex flex-row"
       style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}
     >
-      <div className="bg-base-200 menu h-screen w-64">
-        <Link to="/" className="p-5 text-green-600">
+      <div className="menu h-screen w-64 bg-base-200">
+        <Link to="/" className="p-5 text-xl text-green-600">
           Leagues
         </Link>
         <ul className="">
@@ -40,7 +39,6 @@ export default function _index() {
             <li key={data.name}>
               <NavLink
                 to={`/league/${data.id}`}
-                prefetch="intent"
                 className={({ isActive, isPending }) =>
                   isPending ? "" : isActive ? "active" : ""
                 }
