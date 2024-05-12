@@ -1,6 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData } from "@remix-run/react";
-
 import axios from "axios";
 
 export const meta: MetaFunction = () => {
@@ -40,7 +39,7 @@ export default function _index() {
     <div>
       <p>League</p>
       <div className="space-y-2">
-        {data.map((data) => (
+        {data.map((data: MatchData) => (
           <MatchComponent key={data.fixture_id} data={data} />
         ))}
       </div>
@@ -70,24 +69,40 @@ interface MatchComponentProps {
   data: MatchData;
 }
 
+/**
+ * Renders the match, takes the match data as prop
+ * @param data takes the match data as input
+ * @constructor
+ */
 function MatchComponent({ data }: MatchComponentProps) {
   return (
     <div className="flex flex-row space-x-12">
-      <div className="flex flex-row">
-        <img
-          alt={`${data.home_team} icon`}
-          className="h-4"
-          src={data.home_team_icon}
-        />
-        <p>{data.home_team}</p>
+      <div>
+        <div className="flex flex-row space-x-2">
+          <img
+            alt={`${data.home_team} icon`}
+            className="h-8 self-center"
+            src={data.home_team_icon}
+          />
+          <p>{data.home_team}</p>
+        </div>
       </div>
+
       <div className="flex flex-row">
-        <img
-          alt={`${data.away_team} icon`}
-          className="h-4"
-          src={data.away_team_icon}
-        />
-        <p>{data.away_team}</p>
+        <p>
+          {data.home_goals} : {data.away_goals}
+        </p>
+      </div>
+
+      <div>
+        <div className="flex flex-row space-x-2">
+          <img
+            alt={`${data.away_team} icon`}
+            className="h-8 self-center"
+            src={data.away_team_icon}
+          />
+          <p>{data.away_team}</p>
+        </div>
       </div>
     </div>
   );
