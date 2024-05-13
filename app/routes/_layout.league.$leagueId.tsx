@@ -76,7 +76,7 @@ interface MatchComponentProps {
  */
 function MatchComponent({ data }: MatchComponentProps) {
   return (
-    <div className="flex flex-row space-x-12">
+    <div className="flex flex-row space-x-8">
       <div>
         <div className="flex flex-row space-x-2">
           <img
