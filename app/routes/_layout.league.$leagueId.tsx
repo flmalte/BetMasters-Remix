@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
+import { useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
 
 export const meta: MetaFunction = () => {
@@ -25,7 +25,12 @@ export async function loader({ params }: LoaderFunctionArgs) {
       },
     );
     /*console.log(response.data);*/
-    return response.data;
+    return json(response.data, {
+      headers: {
+        "Cache-Control":
+          "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
+      }, // Adds Incremental Static Regeneration, needs to be changed later
+    });
   } catch (error) {
     console.error(error);
     return error;

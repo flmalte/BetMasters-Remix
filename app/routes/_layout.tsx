@@ -19,7 +19,7 @@ export async function loader() {
       headers: {
         "Cache-Control":
           "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
-      },
+      }, // Adds Incremental Static Regeneration
     });
   } catch (error) {
     console.error(error);
@@ -85,16 +85,21 @@ function NavBar() {
             role="button"
             className="avatar btn btn-circle btn-ghost"
           >
-            <div className="w-10 rounded-full">
+            {/*<div className="w-10 rounded-full">
               <img
                 alt="Profile picture"
                 src="https://thispersondoesnotexist.com/"
               />
+            </div>*/}
+            <div className="avatar placeholder">
+              <div className="w-10 rounded-full bg-neutral text-neutral-content">
+                <span>SY</span>
+              </div>
             </div>
           </div>
           <ul
             tabIndex={0}
-            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 drop-shadow-lg"
           >
             <li>
               <a>Profile</a>
