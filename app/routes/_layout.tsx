@@ -36,12 +36,12 @@ export default function _index() {
       className="flex flex-row"
       style={{ fontFamily: "pt-sans, sans-serif", lineHeight: "1.8" }}
     >
-      <div className="menu sticky top-0 hidden h-screen w-64 bg-base-100 md:block">
+      <div className="menu sticky top-0 hidden h-screen w-64 overflow-y-scroll bg-base-100 md:block">
         <Link to="/" className="my-2">
           <LogoComponent />
         </Link>
 
-        <ul className="space-y-2">
+        <ul className="space-y-2 ">
           {data.map((data: any) => (
             <li key={data.name}>
               <NavLink
