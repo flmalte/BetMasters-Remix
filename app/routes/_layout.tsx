@@ -1,5 +1,5 @@
 import { MetaFunction } from "@remix-run/node";
-import { Link, NavLink, Outlet, useLoaderData } from "@remix-run/react";
+import { Link, NavLink, Outlet, useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
 
 export const meta: MetaFunction = () => {
@@ -15,7 +15,12 @@ export async function loader() {
       "https://betmasters.azurewebsites.net/leagues/supported",
     );
     /*console.log(response.data);*/
-    return response.data;
+    return json(response.data, {
+      headers: {
+        "Cache-Control":
+          "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
+      },
+    });
   } catch (error) {
     console.error(error);
     return error;
