@@ -44,7 +44,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         </p>
       </div>
 
-      <div className="mb-4 flex items-center justify-between">
+      <div className="mb-4 grid grid-cols-3 items-center">
         <div className="flex items-center space-x-2">
           <img
             alt={`${data.home_team} icon`}
@@ -54,7 +54,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
           <p className="text-lg font-medium">{data.home_team}</p>
         </div>
 
-        <div className="flex flex-col items-center justify-center">
+        <div className="flex flex-col items-center">
           <p className="text-2xl font-bold">
             {data.home_goals} : {data.away_goals}
           </p>
@@ -66,13 +66,13 @@ export default function MatchComponent({ data }: MatchComponentProps) {
             )}
         </div>
 
-        <div className="flex items-center space-x-2">
+        <div className="flex items-center justify-end space-x-2">
+          <p className="text-lg font-medium">{data.away_team}</p>
           <img
             alt={`${data.away_team} icon`}
             className="h-10 w-10"
             src={data.away_team_icon}
           />
-          <p className="text-lg font-medium">{data.away_team}</p>
         </div>
       </div>
 
@@ -81,7 +81,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
           {data.status_long} ({data.status_short}) - {data.status_elapsed}
         </p>
         {homeDrawAwayOdds && (
-          <div className="text-sm text-gray-300">
+          <div className="flex items-center space-x-4 text-sm text-gray-300">
             <p>Odds:</p>
             <p>Home: {homeDrawAwayOdds.home}</p>
             <p>Draw: {homeDrawAwayOdds.draw}</p>
