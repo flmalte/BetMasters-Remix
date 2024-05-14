@@ -1,7 +1,7 @@
 export default function LogoComponent() {
   return (
     <svg
-      className="h-24 w-32"
+      className="mx-auto h-24 w-32"
       width="237"
       height="175"
       viewBox="0 0 237 175"
