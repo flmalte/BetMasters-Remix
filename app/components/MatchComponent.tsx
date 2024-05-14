@@ -37,7 +37,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
   )?.odds;
 
   return (
-    <div className="mx-4 my-2 flex flex-col rounded-lg bg-base-200 p-4 text-white">
+    <div className="mx-4 my-2 flex flex-col rounded-lg bg-neutral p-4 text-white">
       <div className="mb-4 flex items-center justify-between">
         <p className="text-sm text-gray-400">
           {new Date(data.fixture_date).toLocaleString()}
