@@ -34,7 +34,7 @@ export default function _index() {
   return (
     <div
       className="flex flex-row"
-      style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}
+      style={{ fontFamily: "pt-sans, sans-serif", lineHeight: "1.8" }}
     >
       <div className="menu sticky top-0 hidden h-screen w-64 bg-base-100 md:block">
         <Link to="/" className="my-2">

@@ -44,7 +44,7 @@ export default function _index() {
   return (
     <div>
       {/*<p>League</p>*/}
-      <div className="mt-4 space-y-4">
+      <div className="my-4 space-y-4">
         {data.map((data) => (
           <MatchComponent key={data.fixture_id} data={data} />
         ))}

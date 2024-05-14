@@ -44,7 +44,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         </p>
       </div>
 
-      <div className="mb-4 grid grid-cols-3 items-center">
+      <div className="mb-4 grid grid-cols-3 items-center gap-4">
         <div className="flex items-center space-x-2">
           <img
             alt={`${data.home_team} icon`}
@@ -76,7 +76,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         </div>
       </div>
 
-      <div className="flex items-center justify-between">
+      <div className="mt-4 flex items-center justify-between">
         <p className="text-sm text-gray-400">
           {data.status_long} ({data.status_short}) - {data.status_elapsed}
         </p>
