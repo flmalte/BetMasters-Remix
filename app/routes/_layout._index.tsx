@@ -8,9 +8,5 @@ export const meta: MetaFunction = () => {
 };
 
 export default function Page() {
-  return (
-    <div>
-      <p>Test</p>
-    </div>
-  );
+  return <div></div>;
 }

@@ -30,9 +30,9 @@ export default function _index() {
       className="flex flex-row"
       style={{ fontFamily: "system-ui, sans-serif", lineHeight: "1.8" }}
     >
-      <div className="menu sticky top-0 hidden h-screen w-64 bg-base-200 md:block">
-        <Link to="/" className="p-5 text-xl text-green-600">
-          Leagues
+      <div className="menu sticky top-0 hidden h-screen w-64 bg-base-100 md:block">
+        <Link to="/" className="my-2">
+          <img className="h-24" alt="Logo" src="logo.svg" />
         </Link>
         <ul className="space-y-2">
           {data.map((data: any) => (
@@ -54,7 +54,55 @@ export default function _index() {
           ))}
         </ul>
       </div>
-      <Outlet />
+      <div className="w-full">
+        <NavBar />
+        <Outlet />
+      </div>
+    </div>
+  );
+}
+
+function NavBar() {
+  return (
+    <div className="navbar sticky top-0 w-full bg-base-100">
+      <div className="flex-1"></div>
+      <div className="flex-none gap-2">
+        {/*<div className="form-control">
+          <input
+            type="text"
+            placeholder="Search"
+            className="input input-bordered w-24 md:w-auto"
+          />
+        </div>*/}
+        <div className="dropdown dropdown-end">
+          <div
+            tabIndex={0}
+            role="button"
+            className="avatar btn btn-circle btn-ghost"
+          >
+            <div className="w-10 rounded-full">
+              <img
+                alt="Profile picture"
+                src="https://thispersondoesnotexist.com/"
+              />
+            </div>
+          </div>
+          <ul
+            tabIndex={0}
+            className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 shadow"
+          >
+            <li>
+              <a>Profile</a>
+            </li>
+            <li>
+              <a>Settings</a>
+            </li>
+            <li>
+              <a>Logout</a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
   );
 }
