@@ -1,6 +1,7 @@
 import { MetaFunction } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
+import LogoComponent from "~/components/LogoComponent";
 
 export const meta: MetaFunction = () => {
   return [
@@ -37,8 +38,9 @@ export default function _index() {
     >
       <div className="menu sticky top-0 hidden h-screen w-64 bg-base-100 md:block">
         <Link to="/" className="my-2">
-          <img className="h-24" alt="Logo" src="logo.svg" />
+          <LogoComponent />
         </Link>
+
         <ul className="space-y-2">
           {data.map((data: any) => (
             <li key={data.name}>
