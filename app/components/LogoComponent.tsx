@@ -1,3 +1,7 @@
+/**
+ * Returns the BetMasters logo as SVG
+ * @constructor
+ */
 export default function LogoComponent() {
   return (
     <svg

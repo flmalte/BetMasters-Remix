@@ -10,6 +10,9 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+/**
+ * loader fetches the data on the server from backend api
+ */
 export async function loader() {
   try {
     const response = await axios.get(

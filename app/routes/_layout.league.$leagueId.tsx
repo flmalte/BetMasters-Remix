@@ -10,6 +10,10 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+/**
+ * loader fetches the data on the server from backend api
+ * @param params takes leagueId from url as param
+ */
 export async function loader({ params }: LoaderFunctionArgs) {
   try {
     const response = await axios.get(
@@ -39,7 +43,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export default function _index() {
-  const data = useLoaderData<typeof loader>();
+  const data = useLoaderData<typeof loader>(); // receives data returned by loader
 
   return (
     <div>
