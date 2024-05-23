@@ -19,6 +19,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
     const response = await axios.get(
       `https://betmasters.azurewebsites.net/fixturesWithOdds`,
 
+      // query params for API request
       {
         params: {
           bookmaker: 27,
