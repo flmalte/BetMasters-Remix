@@ -2,6 +2,7 @@ import { MetaFunction } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
 import LogoComponent from "~/components/LogoComponent";
+import { backendUrl } from "~/api/betMasters";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,9 +16,7 @@ export const meta: MetaFunction = () => {
  */
 export async function loader() {
   try {
-    const response = await axios.get(
-      "https://betmasters.azurewebsites.net/leagues/supported",
-    );
+    const response = await axios.get(backendUrl + "/leagues/supported");
     /*console.log(response.data);*/
     return json(response.data, {
       headers: {
@@ -31,7 +30,7 @@ export async function loader() {
   }
 }
 
-export default function _index() {
+export default function _layout() {
   const data = useLoaderData<typeof loader>();
 
   return (
@@ -40,12 +39,12 @@ export default function _index() {
       style={{ fontFamily: "pt-sans, sans-serif", lineHeight: "1.8" }}
     >
       <div className="menu sticky top-0 hidden h-screen w-64 overflow-y-scroll bg-base-100 md:block">
-        <Link to="/" className="my-2">
+        <Link to="/" className="my-2" prefetch="intent">
           <LogoComponent />
         </Link>
 
-        <ul className="space-y-2 ">
-          {data.map((data: any) => (
+        <ul className="space-y-2">
+          {data.map((data) => (
             <li key={data.name}>
               <NavLink
                 to={`/league/${data.id}`}

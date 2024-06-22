@@ -1,4 +1,4 @@
-interface MatchData {
+type MatchData = {
   fixture_id: string;
   league_id: string;
   fixture_date: string;
@@ -19,11 +19,11 @@ interface MatchData {
       [key: string]: number;
     };
   }[];
-}
+};
 
-interface MatchComponentProps {
+type MatchComponentProps = {
   data: MatchData;
-}
+};
 
 /**
  * Renders the match, takes the match data as prop
