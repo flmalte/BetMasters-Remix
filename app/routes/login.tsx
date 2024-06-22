@@ -1,11 +1,11 @@
 import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { Form, json } from "@remix-run/react";
+import { Form, json, Link } from "@remix-run/react";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "BetMasters" },
+    { title: "BetMasters Login" },
     { name: "description", content: "Welcome to BetMasters!" },
   ];
 };
@@ -17,21 +17,22 @@ export async function action({ request }: ActionFunctionArgs) {
     const email = formData.get("email");
     const password = formData.get("password");
 
-    // Construct the query parameters for the URL
-    const params = new URLSearchParams({ email, password }).toString();
-
     const response = await axios.post(
-      `${backendUrl}/login?${params}`,
+      backendUrl + "/login",
       {},
       {
-        headers: {
-          "Content-Type": "application/json",
+        params: {
+          email,
+          password,
         },
       },
     );
 
     if (response.status === 200) {
       return redirect("/");
+    }
+    if (response.status === 500) {
+      console.error("Response: " + response.status);
     }
 
     return json({ error: "Login failed" }, { status: response.status });
@@ -80,6 +81,11 @@ export default function Login() {
                 className="input input-bordered"
                 required
               />
+              <label className="label">
+                <Link to="/register" className="link-hover link label-text-alt">
+                  Create a new account?
+                </Link>
+              </label>
             </div>
 
             <div className="form-control mt-6">

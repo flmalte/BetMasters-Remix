@@ -1,5 +1,5 @@
 import { MetaFunction, redirect, ActionFunctionArgs } from "@remix-run/node";
-import { json, Form } from "@remix-run/react";
+import { json, Form, Link } from "@remix-run/react";
 import { backendUrl } from "~/api/betMasters";
 import axios from "axios";
 
@@ -20,27 +20,25 @@ export async function action({ request }: ActionFunctionArgs) {
     const lastName = formData.get("lastName");
     const dateOfBirth = formData.get("dateOfBirth");
 
-    // Construct the query parameters for the URL
-    const params = new URLSearchParams({
-      email,
-      password,
-      first_name: firstName,
-      last_name: lastName,
-      dob: dateOfBirth,
-    }).toString();
-
     const response = await axios.post(
-      `${backendUrl}/register?${params}`,
+      backendUrl + "/register",
       {},
       {
-        headers: {
-          "Content-Type": "application/json",
+        params: {
+          email: email,
+          password: password,
+          first_name: firstName,
+          last_name: lastName,
+          dob: dateOfBirth,
         },
       },
     );
 
     if (response.status === 200) {
       return redirect("/login");
+    }
+    if (response.status === 500) {
+      console.error("Response: " + response.status);
     }
 
     return json({ error: "Registration failed" }, { status: response.status });
@@ -124,6 +122,11 @@ export default function Register() {
                 className="input input-bordered"
                 required
               />
+              <label className="label">
+                <Link to="/login" className="link-hover link label-text-alt">
+                  Already have an account?
+                </Link>
+              </label>
             </div>
 
             <div className="form-control mt-6">
