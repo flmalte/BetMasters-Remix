@@ -36,6 +36,8 @@ export default function MatchComponent({ data }: MatchComponentProps) {
     (oddsItem) => oddsItem.type === "HomeDrawAway",
   )?.odds;
 
+  const isStarted = data.status_short !== "NS";
+
   return (
     <div className="mx-4 my-2 flex flex-col rounded-lg bg-neutral p-4 text-white">
       <div className="mb-4 flex items-center justify-between">
@@ -55,8 +57,11 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         </div>
 
         <div className="flex flex-col items-center">
-          <p className="text-2xl font-bold">
-            {data.home_goals} : {data.away_goals}
+          <p
+            className={`text-2xl font-bold ${isStarted ? "text-green-500" : ""}`}
+          >
+            {isStarted ? data.home_goals : "-"} :{" "}
+            {isStarted ? data.away_goals : "-"}
           </p>
           {data.home_penalty_goals !== undefined &&
             data.away_penalty_goals !== undefined && (
@@ -77,9 +82,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
       </div>
 
       <div className="mt-4 flex items-center justify-between">
-        <p className="text-sm text-gray-400">
-          {data.status_long} ({data.status_short}) - {data.status_elapsed}
-        </p>
+        <StatusDisplay data={data} />
         {homeDrawAwayOdds && (
           <div className="flex items-center space-x-4 text-sm text-gray-300">
             <b>Odds:</b>
@@ -90,6 +93,27 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         )}
       </div>
     </div>
+  );
+}
+
+interface Data {
+  status_long: string;
+  status_short: string;
+  status_elapsed: string;
+}
+
+interface Props {
+  data: Data;
+}
+
+function StatusDisplay({ data }: Props) {
+  const isStarted = data.status_short !== "NS";
+
+  return (
+    <p className={`text-sm ${isStarted ? "text-green-500" : "text-gray-400"}`}>
+      {data.status_long} ({data.status_short})
+      {isStarted && ` - ${data.status_elapsed}`}
+    </p>
   );
 }
 
