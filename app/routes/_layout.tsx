@@ -2,13 +2,20 @@ import { Link, NavLink, Outlet, useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
 import LogoComponent from "~/components/LogoComponent";
 import { backendUrl } from "~/api/betMasters";
+import { requireAuthCookie } from "~/utils/auth";
+import { requireUserCookie } from "~/utils/user";
+import { LoaderFunctionArgs } from "@remix-run/node";
 
 /**
  * loader fetches the data on the server from backend api
  */
-export async function loader() {
+export async function loader({ request }: LoaderFunctionArgs) {
+  /*makes everyting inside _layout a protected route, if not logged in it redirects to the login page*/
+  const jwt = await requireAuthCookie(request);
+  const user = await requireUserCookie(request);
+
   const response = await axios.get(backendUrl + "/leagues/supported");
-  /*console.log(response.data);*/
+
   return json(response.data, {
     headers: {
       "Cache-Control":

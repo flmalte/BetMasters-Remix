@@ -38,7 +38,7 @@ export async function action({ request }: ActionFunctionArgs) {
 
     // Serialize cookies
     const authCookieHeader = await authCookie.serialize(jwt);
-    const userCookieHeader = await userCookie.serialize(JSON.stringify(user));
+    const userCookieHeader = await userCookie.serialize(user);
 
     return redirect("/", {
       headers: {
