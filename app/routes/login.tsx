@@ -2,6 +2,7 @@ import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, json, Link } from "@remix-run/react";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
+import { authCookie } from "~/utils/auth";
 
 export const meta: MetaFunction = () => {
   return [
@@ -29,10 +30,14 @@ export async function action({ request }: ActionFunctionArgs) {
     );
 
     if (response.status === 200) {
-      return redirect("/");
-    }
-    if (response.status === 500) {
-      console.error("Response: " + response.status);
+      const jwt = response.data.jwtToken;
+
+      // Set the JWT as an HTTP-only cookie
+      return redirect("/", {
+        headers: {
+          "Set-Cookie": await authCookie.serialize(jwt),
+        },
+      });
     }
 
     return json({ error: "Login failed" }, { status: response.status });

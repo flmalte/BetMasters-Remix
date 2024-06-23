@@ -82,7 +82,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         </p>
         {homeDrawAwayOdds && (
           <div className="flex items-center space-x-4 text-sm text-gray-300">
-            <p>Odds:</p>
+            <strong>Odds:</strong>
             <p>Home: {homeDrawAwayOdds.home}</p>
             <p>Draw: {homeDrawAwayOdds.draw}</p>
             <p>Away: {homeDrawAwayOdds.away}</p>

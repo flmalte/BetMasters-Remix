@@ -2,6 +2,7 @@ import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
 import MatchComponent from "~/components/MatchComponent";
+import { backendUrl } from "~/api/betMasters";
 
 export const meta: MetaFunction = () => {
   return [
@@ -17,7 +18,7 @@ export const meta: MetaFunction = () => {
 export async function loader({ params }: LoaderFunctionArgs) {
   try {
     const response = await axios.get(
-      `https://betmasters.azurewebsites.net/fixturesWithOdds`,
+      backendUrl + "/fixturesWithOdds",
 
       // query params for API request
       {
@@ -26,7 +27,7 @@ export async function loader({ params }: LoaderFunctionArgs) {
           future_games_only: true,
           games_with_bets_only: true,
           league: params.leagueId,
-          season: 2023,
+          season: 2024,
         },
       },
     );
