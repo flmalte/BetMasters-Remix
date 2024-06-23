@@ -17,22 +17,23 @@ export const meta: MetaFunction = () => {
  */
 export async function loader({ params }: LoaderFunctionArgs) {
   try {
-    const response = await axios.get(
-      backendUrl + "/fixturesWithOdds",
-
-      // query params for API request
-      {
-        params: {
-          bookmaker: 27,
-          future_games_only: true,
-          games_with_bets_only: true,
-          league: params.leagueId,
-          season: 2024,
-        },
+    const response = await axios.get(backendUrl + "/fixturesWithOdds", {
+      params: {
+        bookmaker: 27,
+        future_games_only: true,
+        games_with_bets_only: true,
+        league: params.leagueId,
+        season: 2024,
       },
+    });
+
+    // Sorts the data based on fixture_date
+    const sortedData = response.data.sort(
+      (a: { fixture_date: string }, b: { fixture_date: string }) =>
+        new Date(a.fixture_date).getTime() - new Date(b.fixture_date).getTime(),
     );
-    /*console.log(response.data);*/
-    return json(response.data, {
+
+    return json(sortedData, {
       headers: {
         "Cache-Control":
           "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
