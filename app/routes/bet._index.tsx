@@ -7,6 +7,7 @@ export const meta: MetaFunction = () => {
   ];
 };
 
+// For now renders empty route
 export default function Page() {
   return <div></div>;
 }

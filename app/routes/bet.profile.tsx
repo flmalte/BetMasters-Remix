@@ -21,7 +21,7 @@ export default function Profile() {
   const { user, jwt } = useLoaderData<typeof loader>(); // receives data returned by loader
 
   return (
-    <div>
+    <div className="max-w-3xl">
       <div className="my-4 space-y-4">
         <p>{user ? user.email : "No user found"}</p>
         <p>{jwt ? jwt : "No jwt found"}</p>

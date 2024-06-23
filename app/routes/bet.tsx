@@ -41,7 +41,7 @@ export default function _layout() {
           {data.map((data) => (
             <li key={data.name}>
               <NavLink
-                to={`/league/${data.id}`}
+                to={`/bet/league/${data.id}`}
                 className={({ isActive, isPending }) =>
                   isPending ? "" : isActive ? "active" : ""
                 }
@@ -87,7 +87,7 @@ function NavBar() {
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 drop-shadow-lg"
           >
             <li>
-              <Link to="/profile">Profile</Link>
+              <Link to="/bet/profile">Profile</Link>
             </li>
             {/*<li>
               <Link to="/">Settings</Link>
