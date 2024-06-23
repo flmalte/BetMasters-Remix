@@ -1,6 +1,7 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
 import { useLoaderData, json } from "@remix-run/react";
-import { userCookie } from "~/utils/auth";
+
+import { userCookie } from "~/utils/user";
 
 export const meta: MetaFunction = () => {
   return [
@@ -15,8 +16,6 @@ export async function loader({ request }: LoaderFunctionArgs) {
   let user = null;
 
   user = JSON.parse(userJson);
-
-  console.error("Failed to parse user JSON:", e);
 
   return json({ user });
 }

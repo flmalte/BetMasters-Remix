@@ -44,7 +44,7 @@ export async function action({ request }: ActionFunctionArgs) {
   return json({ error: "Registration failed" }, { status: response.status });
 }
 
-export default function Register() {
+export default function Signup() {
   const [firstName, setFirstName] = useState<string>("");
   const [lastName, setLastName] = useState<string>("");
   const [email, setEmail] = useState<string>("");
@@ -63,6 +63,7 @@ export default function Register() {
     return "";
   }
 
+  // Validates the password and returns an error
   function validatePassword(pwd: string): string {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\\da-zA-Z]).{8,50}$/;
@@ -72,6 +73,7 @@ export default function Register() {
     return "";
   }
 
+  // Validates the age and returns an error if age too young
   function validateAge(dob: string): string {
     const today = new Date();
     const birthDate = new Date(dob);
@@ -115,7 +117,7 @@ export default function Register() {
           </p>
         </div>
         <div className="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">
-          <Form action="/register" method="post" className="card-body">
+          <Form action="/signup" method="post" className="card-body">
             <div className="form-control">
               <label className="label">
                 <span className="label-text">First Name</span>
@@ -203,7 +205,7 @@ export default function Register() {
             <div className="form-control mt-6">
               <button
                 className="btn btn-primary"
-                disabled={!!emailError || !!passwordError || !!dateOfBirthError}
+                disabled={!!emailError || !!passwordError || !!dateOfBirthError} // Disables the button if input is incorrect
               >
                 Register
               </button>

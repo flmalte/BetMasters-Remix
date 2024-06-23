@@ -1,8 +1,9 @@
 import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { Form, json, Link } from "@remix-run/react";
+import { Form, json, Link, useActionData } from "@remix-run/react";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
-import { authCookie, userCookie } from "~/utils/auth";
+import { authCookie } from "~/utils/auth";
+import { userCookie } from "~/utils/user";
 
 export const meta: MetaFunction = () => {
   return [
@@ -44,12 +45,14 @@ export async function action({ request }: ActionFunctionArgs) {
         "Set-Cookie": [authCookieHeader, userCookieHeader].join(", "),
       },
     });
+  } else {
+    return json({ errors: { email: "Invalid email or password" } }, 400);
   }
-
-  return json({ error: "Login failed" }, { status: response.status });
 }
 
 export default function Login() {
+  let actionData = useActionData<typeof action>();
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -87,7 +90,7 @@ export default function Login() {
                 required
               />
               <label className="label">
-                <Link to="/register" className="link-hover link label-text-alt">
+                <Link to="/signup" className="link-hover link label-text-alt">
                   Create a new account?
                 </Link>
               </label>

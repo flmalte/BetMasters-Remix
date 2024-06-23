@@ -16,7 +16,7 @@ export const meta: MetaFunction = () => {
  * @param params takes leagueId from url as param
  */
 export async function loader({ params }: LoaderFunctionArgs) {
-  const response = await axios.get(backendUrl + "/fixturesWithOdds", {
+  const response = await axios.get(backendUrl + "/v1/fixturesWithOdds", {
     params: {
       bookmaker: 27,
       future_games_only: true,

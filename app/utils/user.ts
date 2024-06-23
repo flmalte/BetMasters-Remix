@@ -1,6 +1,6 @@
 import { createCookie } from "@remix-run/node";
 
-export const authCookie = createCookie("auth", {
+export const userCookie = createCookie("user", {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
   sameSite: "lax",

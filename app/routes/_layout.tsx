@@ -1,15 +1,7 @@
-import { MetaFunction } from "@remix-run/node";
 import { Link, NavLink, Outlet, useLoaderData, json } from "@remix-run/react";
 import axios from "axios";
 import LogoComponent from "~/components/LogoComponent";
 import { backendUrl } from "~/api/betMasters";
-
-export const meta: MetaFunction = () => {
-  return [
-    { title: "BetMasters" },
-    { name: "description", content: "Welcome to BetMasters!" },
-  ];
-};
 
 /**
  * loader fetches the data on the server from backend api
@@ -71,28 +63,15 @@ function NavBar() {
     <div className="navbar sticky top-0 w-full bg-base-100">
       <div className="flex-1"></div>
       <div className="flex-none gap-2">
-        {/*<div className="form-control">
-          <input
-            type="text"
-            placeholder="Search"
-            className="input input-bordered w-24 md:w-auto"
-          />
-        </div>*/}
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
             role="button"
             className="avatar btn btn-circle btn-ghost"
           >
-            {/*<div className="w-10 rounded-full">
-              <img
-                alt="Profile picture"
-                src="https://thispersondoesnotexist.com/"
-              />
-            </div>*/}
             <div className="avatar placeholder">
               <div className="w-10 rounded-full bg-neutral text-neutral-content">
-                <span>SY</span>
+                <span>U</span>
               </div>
             </div>
           </div>
@@ -103,9 +82,9 @@ function NavBar() {
             <li>
               <Link to="/profile">Profile</Link>
             </li>
-            <li>
+            {/*<li>
               <Link to="/">Settings</Link>
-            </li>
+            </li>*/}
             <li>
               <Link to="/login">Logout</Link>
             </li>
