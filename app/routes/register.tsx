@@ -13,42 +13,35 @@ export const meta: MetaFunction = () => {
 
 // Action function to handle form submission
 export async function action({ request }: ActionFunctionArgs) {
-  try {
-    const formData = await request.formData();
-    const email = formData.get("email");
-    const password = formData.get("password");
-    const firstName = formData.get("firstName");
-    const lastName = formData.get("lastName");
-    const dateOfBirth = formData.get("dateOfBirth");
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const password = formData.get("password");
+  const firstName = formData.get("firstName");
+  const lastName = formData.get("lastName");
+  const dateOfBirth = formData.get("dateOfBirth");
 
-    const response = await axios.post(
-      backendUrl + "/register",
-      {},
-      {
-        params: {
-          email: email,
-          password: password,
-          first_name: firstName,
-          last_name: lastName,
-          dob: dateOfBirth,
-        },
+  const response = await axios.post(
+    backendUrl + "/register",
+    {},
+    {
+      params: {
+        email: email,
+        password: password,
+        first_name: firstName,
+        last_name: lastName,
+        dob: dateOfBirth,
       },
-    );
+    },
+  );
 
-    if (response.status === 200) {
-      return redirect("/login");
-    }
-    if (response.status === 500) {
-      console.error("Response: " + response.status);
-    }
-
-    return json({ error: "Registration failed" }, { status: response.status });
-  } catch (error) {
-    return json(
-      { error: "Registration failed" },
-      { status: error.response ? error.response.status : 500 },
-    );
+  if (response.status === 200) {
+    return redirect("/login");
   }
+  if (response.status === 500) {
+    console.error("Response: " + response.status);
+  }
+
+  return json({ error: "Registration failed" }, { status: response.status });
 }
 
 export default function Register() {

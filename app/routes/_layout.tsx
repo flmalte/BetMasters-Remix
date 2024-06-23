@@ -15,19 +15,14 @@ export const meta: MetaFunction = () => {
  * loader fetches the data on the server from backend api
  */
 export async function loader() {
-  try {
-    const response = await axios.get(backendUrl + "/leagues/supported");
-    /*console.log(response.data);*/
-    return json(response.data, {
-      headers: {
-        "Cache-Control":
-          "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
-      }, // Adds Incremental Static Regeneration
-    });
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
+  const response = await axios.get(backendUrl + "/leagues/supported");
+  /*console.log(response.data);*/
+  return json(response.data, {
+    headers: {
+      "Cache-Control":
+        "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
+    }, // Adds Incremental Static Regeneration
+  });
 }
 
 export default function _layout() {

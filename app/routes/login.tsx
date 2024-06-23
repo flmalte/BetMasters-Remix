@@ -13,47 +13,40 @@ export const meta: MetaFunction = () => {
 
 // Action function to handle form submission
 export async function action({ request }: ActionFunctionArgs) {
-  try {
-    const formData = await request.formData();
-    const email = formData.get("email");
-    const password = formData.get("password");
+  const formData = await request.formData();
+  const email = formData.get("email");
+  const password = formData.get("password");
 
-    const response = await axios.post(
-      backendUrl + "/login",
-      {},
-      {
-        params: {
-          email,
-          password,
-        },
+  const response = await axios.post(
+    backendUrl + "/login",
+    {},
+    {
+      params: {
+        email,
+        password,
       },
-    );
+    },
+  );
 
-    if (response.status === 200) {
-      const jwt = response.data.jwtToken;
-      const user = {
-        uid: response.data.uid,
-        email: email, // Add the email to the user object
-      };
+  if (response.status === 200) {
+    const jwt = response.data.jwtToken;
+    const user = {
+      uid: response.data.uid,
+      email: email, // Add the email to the user object
+    };
 
-      // Serialize cookies
-      const authCookieHeader = await authCookie.serialize(jwt);
-      const userCookieHeader = await userCookie.serialize(JSON.stringify(user));
+    // Serialize cookies
+    const authCookieHeader = await authCookie.serialize(jwt);
+    const userCookieHeader = await userCookie.serialize(JSON.stringify(user));
 
-      return redirect("/", {
-        headers: {
-          "Set-Cookie": [authCookieHeader, userCookieHeader].join(", "),
-        },
-      });
-    }
-
-    return json({ error: "Login failed" }, { status: response.status });
-  } catch (error) {
-    return json(
-      { error: "Login failed" },
-      { status: error.response ? error.response.status : 500 },
-    );
+    return redirect("/", {
+      headers: {
+        "Set-Cookie": [authCookieHeader, userCookieHeader].join(", "),
+      },
+    });
   }
+
+  return json({ error: "Login failed" }, { status: response.status });
 }
 
 export default function Login() {

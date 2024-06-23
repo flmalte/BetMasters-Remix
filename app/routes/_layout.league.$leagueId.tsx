@@ -16,33 +16,28 @@ export const meta: MetaFunction = () => {
  * @param params takes leagueId from url as param
  */
 export async function loader({ params }: LoaderFunctionArgs) {
-  try {
-    const response = await axios.get(backendUrl + "/fixturesWithOdds", {
-      params: {
-        bookmaker: 27,
-        future_games_only: true,
-        games_with_bets_only: true,
-        league: params.leagueId,
-        season: 2024,
-      },
-    });
+  const response = await axios.get(backendUrl + "/fixturesWithOdds", {
+    params: {
+      bookmaker: 27,
+      future_games_only: true,
+      games_with_bets_only: true,
+      league: params.leagueId,
+      season: 2024,
+    },
+  });
 
-    // Sorts the data based on fixture_date
-    const sortedData = response.data.sort(
-      (a: { fixture_date: string }, b: { fixture_date: string }) =>
-        new Date(a.fixture_date).getTime() - new Date(b.fixture_date).getTime(),
-    );
+  // Sorts the data based on fixture_date
+  const sortedData = response.data.sort(
+    (a: { fixture_date: string }, b: { fixture_date: string }) =>
+      new Date(a.fixture_date).getTime() - new Date(b.fixture_date).getTime(),
+  );
 
-    return json(sortedData, {
-      headers: {
-        "Cache-Control":
-          "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
-      }, // Adds Incremental Static Regeneration, needs to be changed later
-    });
-  } catch (error) {
-    console.error(error);
-    return error;
-  }
+  return json(sortedData, {
+    headers: {
+      "Cache-Control":
+        "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
+    }, // Adds Incremental Static Regeneration, needs to be changed later
+  });
 }
 
 export default function _index() {

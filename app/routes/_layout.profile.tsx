@@ -14,11 +14,9 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const userJson = await userCookie.parse(cookieHeader);
   let user = null;
 
-  try {
-    user = JSON.parse(userJson);
-  } catch (e) {
-    console.error("Failed to parse user JSON:", e);
-  }
+  user = JSON.parse(userJson);
+
+  console.error("Failed to parse user JSON:", e);
 
   return json({ user });
 }
