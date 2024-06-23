@@ -40,7 +40,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const authCookieHeader = await authCookie.serialize(jwt);
     const userCookieHeader = await userCookie.serialize(user);
 
-    return redirect("/", {
+    return redirect("/bet", {
       headers: {
         "Set-Cookie": [authCookieHeader, userCookieHeader].join(", "),
       },

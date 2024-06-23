@@ -92,11 +92,11 @@ function NavBar() {
             {/*<li>
               <Link to="/">Settings</Link>
             </li>*/}
-            <li>
-              <form method="post" action="/logout">
+            <form method="post" action="/logout">
+              <li>
                 <button>Logout</button>
-              </form>
-            </li>
+              </li>
+            </form>
           </ul>
         </div>
       </div>
