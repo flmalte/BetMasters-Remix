@@ -86,7 +86,9 @@ function NavBar() {
               <Link to="/">Settings</Link>
             </li>*/}
             <li>
-              <Link to="/login">Logout</Link>
+              <form method="post" action="/logout">
+                <button>Logout</button>
+              </form>
             </li>
           </ul>
         </div>

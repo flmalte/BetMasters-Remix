@@ -11,8 +11,8 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
-  const cookieHeader = request.headers.get("Cookie");
-  const userJson = await userCookie.parse(cookieHeader);
+  const cookieString = request.headers.get("Cookie");
+  const userJson = await userCookie.parse(cookieString);
   let user = null;
 
   user = JSON.parse(userJson);
