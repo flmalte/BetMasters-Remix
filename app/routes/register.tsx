@@ -2,6 +2,7 @@ import { MetaFunction, redirect, ActionFunctionArgs } from "@remix-run/node";
 import { json, Form, Link } from "@remix-run/react";
 import { backendUrl } from "~/api/betMasters";
 import axios from "axios";
+import { useEffect, useState } from "react";
 
 export const meta: MetaFunction = () => {
   return [
@@ -51,6 +52,64 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Register() {
+  const [firstName, setFirstName] = useState<string>("");
+  const [lastName, setLastName] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [dateOfBirth, setDateOfBirth] = useState<string>("");
+
+  const [emailError, setEmailError] = useState<string>("");
+  const [passwordError, setPasswordError] = useState<string>("");
+  const [dateOfBirthError, setDateOfBirthError] = useState<string>("");
+
+  function validateEmail(email: string): string {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return "Email must be a valid email address.";
+    }
+    return "";
+  }
+
+  function validatePassword(pwd: string): string {
+    const passwordRegex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\\da-zA-Z]).{8,50}$/;
+    if (!passwordRegex.test(pwd)) {
+      return "Password must be 8-50 characters long, contain at least one lowercase letter, one uppercase letter, one symbol, and one digit.";
+    }
+    return "";
+  }
+
+  function validateAge(dob: string): string {
+    const today = new Date();
+    const birthDate = new Date(dob);
+    const age = today.getFullYear() - birthDate.getFullYear();
+    const monthDifference = today.getMonth() - birthDate.getMonth();
+
+    if (
+      monthDifference < 0 ||
+      (monthDifference === 0 && today.getDate() < birthDate.getDate())
+    ) {
+      return "You must be at least 18 years old.";
+    }
+
+    if (age < 18) {
+      return "You must be at least 18 years old.";
+    }
+    return "";
+  }
+
+  useEffect(() => {
+    if (email) setEmailError(validateEmail(email));
+  }, [email]);
+
+  useEffect(() => {
+    if (password) setPasswordError(validatePassword(password));
+  }, [password]);
+
+  useEffect(() => {
+    if (dateOfBirth) setDateOfBirthError(validateAge(dateOfBirth));
+  }, [dateOfBirth]);
+
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">
@@ -73,6 +132,8 @@ export default function Register() {
                 name="firstName"
                 placeholder="First Name"
                 className="input input-bordered"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
                 required
               />
             </div>
@@ -85,6 +146,8 @@ export default function Register() {
                 name="lastName"
                 placeholder="Last Name"
                 className="input input-bordered"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
                 required
               />
             </div>
@@ -96,8 +159,13 @@ export default function Register() {
                 type="date"
                 name="dateOfBirth"
                 className="input input-bordered"
+                value={dateOfBirth}
+                onChange={(e) => setDateOfBirth(e.target.value)}
                 required
               />
+              {dateOfBirthError && (
+                <span className="text-sm text-red-500">{dateOfBirthError}</span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -108,8 +176,13 @@ export default function Register() {
                 name="email"
                 placeholder="Email"
                 className="input input-bordered"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
                 required
               />
+              {emailError && (
+                <span className="text-sm text-red-500">{emailError}</span>
+              )}
             </div>
             <div className="form-control">
               <label className="label">
@@ -120,8 +193,13 @@ export default function Register() {
                 name="password"
                 placeholder="Password"
                 className="input input-bordered"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              {passwordError && (
+                <span className="text-sm text-red-500">{passwordError}</span>
+              )}
               <label className="label">
                 <Link to="/login" className="link-hover link label-text-alt">
                   Already have an account?
@@ -130,7 +208,12 @@ export default function Register() {
             </div>
 
             <div className="form-control mt-6">
-              <button className="btn btn-primary">Register</button>
+              <button
+                className="btn btn-primary"
+                disabled={!!emailError || !!passwordError || !!dateOfBirthError}
+              >
+                Register
+              </button>
             </div>
           </Form>
         </div>
