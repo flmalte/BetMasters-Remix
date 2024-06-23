@@ -39,8 +39,8 @@ export default function MatchComponent({ data }: MatchComponentProps) {
   return (
     <div className="mx-4 my-2 flex flex-col rounded-lg bg-neutral p-4 text-white">
       <div className="mb-4 flex items-center justify-between">
-        <p className="text-sm text-gray-400">
-          {new Date(data.fixture_date).toLocaleString()}
+        <p className="text-center text-sm text-gray-400">
+          <b>{formatDate(data.fixture_date)}</b>
         </p>
       </div>
 
@@ -82,7 +82,7 @@ export default function MatchComponent({ data }: MatchComponentProps) {
         </p>
         {homeDrawAwayOdds && (
           <div className="flex items-center space-x-4 text-sm text-gray-300">
-            <strong>Odds:</strong>
+            <b>Odds:</b>
             <p>Home: {homeDrawAwayOdds.home}</p>
             <p>Draw: {homeDrawAwayOdds.draw}</p>
             <p>Away: {homeDrawAwayOdds.away}</p>
@@ -91,4 +91,34 @@ export default function MatchComponent({ data }: MatchComponentProps) {
       </div>
     </div>
   );
+}
+
+/**
+ * Function takes match date and returns a formated string
+ * @param date
+ */
+function formatDate(date: string | Date): string {
+  const options: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+  const fixtureDate = new Date(date);
+  const today = new Date();
+  const tomorrow = new Date();
+  tomorrow.setDate(today.getDate() + 1);
+
+  const isToday = fixtureDate.toDateString() === today.toDateString();
+  const isTomorrow = fixtureDate.toDateString() === tomorrow.toDateString();
+
+  if (isToday) {
+    return `Today at ${fixtureDate.toLocaleTimeString("en-DE", { hour: "numeric", minute: "numeric" })}`;
+  } else if (isTomorrow) {
+    return `Tomorrow at ${fixtureDate.toLocaleTimeString("en-DE", { hour: "numeric", minute: "numeric" })}`;
+  } else {
+    return fixtureDate.toLocaleString("en-DE", options);
+  }
 }

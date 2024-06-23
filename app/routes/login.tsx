@@ -2,7 +2,7 @@ import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
 import { Form, json, Link } from "@remix-run/react";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
-import { authCookie } from "~/utils/auth";
+import { authCookie, userCookie } from "~/utils/auth";
 
 export const meta: MetaFunction = () => {
   return [
@@ -31,11 +31,18 @@ export async function action({ request }: ActionFunctionArgs) {
 
     if (response.status === 200) {
       const jwt = response.data.jwtToken;
+      const user = {
+        uid: response.data.uid,
+        email: email, // Add the email to the user object
+      };
 
-      // Set the JWT as an HTTP-only cookie
+      // Serialize cookies
+      const authCookieHeader = await authCookie.serialize(jwt);
+      const userCookieHeader = await userCookie.serialize(JSON.stringify(user));
+
       return redirect("/", {
         headers: {
-          "Set-Cookie": await authCookie.serialize(jwt),
+          "Set-Cookie": [authCookieHeader, userCookieHeader].join(", "),
         },
       });
     }
@@ -56,9 +63,9 @@ export default function Login() {
         <div className="text-center lg:text-left">
           <h1 className="text-5xl font-bold">Login now!</h1>
           <p className="py-6">
-            Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda
-            excepturi exercitationem quasi. In deleniti eaque aut repudiandae et
-            a id nisi.
+            Welcome to BetMasters, the ultimate sports betting experience. Place
+            your bets, check live scores, and manage your account all in one
+            place. Join us and be part of the excitement!
           </p>
         </div>
         <div className="card w-full max-w-sm shrink-0 bg-base-100 shadow-2xl">

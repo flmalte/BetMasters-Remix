@@ -106,13 +106,13 @@ function NavBar() {
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 drop-shadow-lg"
           >
             <li>
-              <Link to="/">Profile</Link>
+              <Link to="/profile">Profile</Link>
             </li>
             <li>
               <Link to="/">Settings</Link>
             </li>
             <li>
-              <Link to="/">Logout</Link>
+              <Link to="/login">Logout</Link>
             </li>
           </ul>
         </div>
