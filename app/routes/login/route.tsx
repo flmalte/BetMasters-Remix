@@ -33,7 +33,7 @@ export async function action({ request }: ActionFunctionArgs) {
     const jwt = response.data.jwtToken;
     const user = {
       uid: response.data.uid,
-      email: email, // Add the email to the user object
+      email: response.data.email, // Add the email to the user object
     };
 
     // Serialize cookies
