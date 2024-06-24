@@ -3,7 +3,6 @@ import { Form, json, Link, useActionData } from "@remix-run/react";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
 import { authCookie } from "~/utils/auth";
-import { userCookie } from "~/utils/user";
 
 export const meta: MetaFunction = () => {
   return [
@@ -30,19 +29,15 @@ export async function action({ request }: ActionFunctionArgs) {
   );
 
   if (response.status === 200) {
-    const jwt = response.data.jwtToken;
-    const user = {
+    const auth = {
       uid: response.data.uid,
       email: response.data.email, // Add the email to the user object
+      jwt: response.data.jwtToken,
     };
-
-    // Serialize cookies
-    const authCookieHeader = await authCookie.serialize(jwt);
-    const userCookieHeader = await userCookie.serialize(user);
 
     return redirect("/bet", {
       headers: {
-        "Set-Cookie": [authCookieHeader, userCookieHeader].join(", "),
+        "Set-Cookie": await authCookie.serialize(auth),
       },
     });
   } else {

@@ -3,7 +3,6 @@ import axios from "axios";
 import LogoComponent from "~/components/LogoComponent";
 import { backendUrl } from "~/api/betMasters";
 import { requireAuthCookie } from "~/utils/auth";
-import { requireUserCookie } from "~/utils/user";
 import { LoaderFunctionArgs } from "@remix-run/node";
 
 /**
@@ -12,7 +11,6 @@ import { LoaderFunctionArgs } from "@remix-run/node";
 export async function loader({ request }: LoaderFunctionArgs) {
   /*makes everyting inside _layout a protected route, if not logged in it redirects to the login page*/
   const jwt = await requireAuthCookie(request);
-  const user = await requireUserCookie(request);
 
   const response = await axios.get(backendUrl + "/leagues/supported");
 
