@@ -3,7 +3,7 @@ import { json, Form, Link } from "@remix-run/react";
 import { backendUrl } from "~/api/betMasters";
 import axios from "axios";
 import { useEffect, useState } from "react";
-import { getAge } from "~/utils/age";
+import { calculateAge } from "~/utils/calculateAge";
 
 export const meta: MetaFunction = () => {
   return [
@@ -76,15 +76,12 @@ export default function Signup() {
 
   // Validates the age and returns an error if age too young
   function validateAge(dob: string): string {
-    const age = getAge(dob);
+    const age = calculateAge(dob);
 
     if (age < 18) {
       return "You must be at least 18 years old.";
     }
 
-    if (age < 18) {
-      return "You must be at least 18 years old.";
-    }
     return "";
   }
 

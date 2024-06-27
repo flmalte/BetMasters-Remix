@@ -9,8 +9,8 @@ import { LoaderFunctionArgs } from "@remix-run/node";
  * loader fetches the data on the server from backend api
  */
 export async function loader({ request }: LoaderFunctionArgs) {
-  /*makes everyting inside _layout a protected route, if not logged in it redirects to the login page*/
-  const jwt = await requireAuthCookie(request);
+  /*makes everything inside /bet/ a protected route, if not logged in it redirects to the login page*/
+  await requireAuthCookie(request);
 
   const response = await axios.get(backendUrl + "/leagues/supported");
 
@@ -87,9 +87,7 @@ function NavBar() {
             <li>
               <Link to="/bet/profile">Profile</Link>
             </li>
-            {/*<li>
-              <Link to="/">Settings</Link>
-            </li>*/}
+
             <form method="post" action="/logout">
               <li>
                 <button>Logout</button>
