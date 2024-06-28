@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData, json } from "@remix-run/react";
+import { useLoaderData, json, useFetcher } from "@remix-run/react";
 import { requireAuthCookie } from "~/utils/auth";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
@@ -31,6 +31,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
 
 export default function Profile() {
   const { auth, balance } = useLoaderData<typeof loader>(); // receives data returned by loader
+  const fetcher = useFetcher();
 
   return (
     <div className="max-w-3xl overflow-x-hidden">
@@ -39,8 +40,18 @@ export default function Profile() {
         <p>ID: {auth ? auth.uid : "No user found"}</p>
 
         <p className="text-wrap">{auth ? auth.jwt : "No jwt found"}</p>
-
         <p>Balance: {balance}</p>
+
+        <fetcher.Form action="/deposit" method="post" className="">
+          <div className="join">
+            <input
+              className="input join-item input-bordered"
+              type="number"
+              name="amount"
+            />
+            <button className="btn join-item">Deposit</button>
+          </div>
+        </fetcher.Form>
       </div>
     </div>
   );
