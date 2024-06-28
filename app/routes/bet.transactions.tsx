@@ -30,16 +30,34 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Profile() {
-  const { auth, balance } = useLoaderData<typeof loader>(); // receives data returned by loader
+  const { balance } = useLoaderData<typeof loader>(); // receives data returned by loader
+  const fetcher = useFetcher();
 
   return (
     <div className="max-w-3xl overflow-x-hidden">
       <div className="my-4 space-y-4">
-        <p>Email: {auth ? auth.email : "No user found"}</p>
-        <p>ID: {auth ? auth.uid : "No user found"}</p>
-
-        <p className="text-wrap">{auth ? auth.jwt : "No jwt found"}</p>
         <p>Balance: {balance}</p>
+
+        <fetcher.Form action="/deposit" method="post" className="">
+          <div className="join">
+            <input
+              className="input join-item input-bordered"
+              type="number"
+              name="amount"
+            />
+            <button className="btn join-item">Deposit</button>
+          </div>
+        </fetcher.Form>
+        <fetcher.Form action="/withdraw" method="post" className="">
+          <div className="join">
+            <input
+              className="input join-item input-bordered"
+              type="number"
+              name="amount"
+            />
+            <button className="btn join-item">Withdraw</button>
+          </div>
+        </fetcher.Form>
       </div>
     </div>
   );

@@ -87,6 +87,9 @@ function NavBar() {
             <li>
               <Link to="/bet/profile">Profile</Link>
             </li>
+            <li>
+              <Link to="/bet/transactions">Funds</Link>
+            </li>
 
             <form method="post" action="/logout">
               <li>
