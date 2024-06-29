@@ -1,5 +1,3 @@
-import { Link } from "@remix-run/react";
-
 type MatchComponentProps = {
   fixture_id: number;
   league: string;
@@ -31,10 +29,7 @@ export default function MatchComponent({
   const isStarted = data.minutes_elapsed !== -1;
 
   return (
-    <Link
-      to={`/bet/match/${data.fixture_id}`}
-      className="mx-4 my-2 flex flex-col rounded-lg bg-neutral p-4 text-white"
-    >
+    <div className="mx-4 my-4 flex flex-col rounded-lg bg-neutral p-4 text-white">
       <div className="mb-4 flex items-center justify-between">
         <p className="text-center text-sm text-gray-400">
           <b>{formatDate(data.fixture_date)}</b>
@@ -78,7 +73,7 @@ export default function MatchComponent({
       <div className="mt-4 flex items-center justify-between">
         <StatusDisplay data={data} />
       </div>
-    </Link>
+    </div>
   );
 }
 

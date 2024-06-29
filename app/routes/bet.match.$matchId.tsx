@@ -23,14 +23,23 @@ export async function loader({ params }: LoaderFunctionArgs) {
     },
   });
 
-  // Sorts the data based on fixture_date
+  const oddsResponse = await axios.get(
+    backendUrl + "/football/v2/odds/for-fixture",
+    {
+      params: {
+        fixtureID: params.matchId,
+        oddID: 1,
+      },
+    },
+  );
   const data = response.data;
+  const odds = oddsResponse.data;
 
-  return json(data);
+  return json({ data, odds });
 }
 
 export default function _index() {
-  const data = useLoaderData<typeof loader>(); // receives data returned by loader
+  const { data } = useLoaderData<typeof loader>(); // receives data returned by loader
   const navigate = useNavigate();
 
   return (

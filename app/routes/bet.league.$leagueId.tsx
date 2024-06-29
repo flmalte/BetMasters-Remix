@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData, json } from "@remix-run/react";
+import { useLoaderData, json, Link } from "@remix-run/react";
 import axios from "axios";
 import MatchComponent from "~/components/MatchComponent";
 import { backendUrl } from "~/api/betMasters";
@@ -55,7 +55,13 @@ export default function _index() {
   return (
     <div className="my-4 space-y-4">
       {data.map((data) => (
-        <MatchComponent key={data.fixture_id} data={data} />
+        <Link
+          to={`/bet/match/${data.fixture_id}`}
+          className=""
+          key={data.fixture_id}
+        >
+          <MatchComponent data={data} />
+        </Link>
       ))}
     </div>
   );
