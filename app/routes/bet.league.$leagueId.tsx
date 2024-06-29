@@ -16,23 +16,32 @@ export const meta: MetaFunction = () => {
  * @param params takes leagueId from url as param
  */
 export async function loader({ params }: LoaderFunctionArgs) {
-  const response = await axios.get(backendUrl + "/v1/fixturesWithOdds", {
-    params: {
-      bookmaker: 27,
-      future_games_only: true,
-      games_with_bets_only: true,
-      league: params.leagueId,
-      season: 2024,
+  const response = await axios.get(
+    backendUrl + "/football/v2/fixtures/by-league-and-season",
+    {
+      params: {
+        leagueID: params.leagueId,
+        seasonID: 2024,
+      },
     },
-  });
-
-  // Sorts the data based on fixture_date
-  const sortedData = response.data.sort(
-    (a: { fixture_date: string }, b: { fixture_date: string }) =>
-      new Date(a.fixture_date).getTime() - new Date(b.fixture_date).getTime(),
   );
 
-  return json(sortedData, {
+  // Get today's date
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  // Filter and sort the data based on fixture_date
+  const filteredAndSortedData = response.data
+    .filter((fixture: { fixture_date: string }) => {
+      const fixtureDate = new Date(fixture.fixture_date);
+      return fixtureDate >= today;
+    })
+    .sort(
+      (a: { fixture_date: string }, b: { fixture_date: string }) =>
+        new Date(a.fixture_date).getTime() - new Date(b.fixture_date).getTime(),
+    );
+
+  return json(filteredAndSortedData, {
     headers: {
       "Cache-Control":
         "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
@@ -44,13 +53,10 @@ export default function _index() {
   const data = useLoaderData<typeof loader>(); // receives data returned by loader
 
   return (
-    <div>
-      {/*<p>League</p>*/}
-      <div className="my-4 space-y-4">
-        {data.map((data) => (
-          <MatchComponent key={data.fixture_id} data={data} />
-        ))}
-      </div>
+    <div className="my-4 space-y-4">
+      {data.map((data) => (
+        <MatchComponent key={data.fixture_id} data={data} />
+      ))}
     </div>
   );
 }

@@ -1,28 +1,21 @@
-type MatchData = {
-  fixture_id: string;
-  league_id: string;
-  fixture_date: string;
-  home_team: string;
-  away_team: string;
-  home_team_icon: string;
-  away_team_icon: string;
-  home_goals: number;
-  away_goals: number;
-  home_penalty_goals?: number;
-  away_penalty_goals?: number;
-  status_long: string;
-  status_short: string;
-  status_elapsed: string;
-  odds: {
-    type: string;
-    odds: {
-      [key: string]: number;
-    };
-  }[];
-};
+import { Link } from "@remix-run/react";
 
 type MatchComponentProps = {
-  data: MatchData;
+  fixture_id: number;
+  league: string;
+  minutes_elapsed: number;
+  away_penalties: number;
+  away_goals: number;
+  home_penalties: number;
+  away_team: string;
+  home_team_icon: string;
+  fixture_date: string;
+  home_goals: number;
+  away_team_icon: string;
+  betting_allowed: string;
+  home_team: string;
+  league_id: number;
+  status: string;
 };
 
 /**
@@ -30,16 +23,18 @@ type MatchComponentProps = {
  * @param data takes the match data as input
  * @constructor
  */
-export default function MatchComponent({ data }: MatchComponentProps) {
-  // Extract the "HomeDrawAway" odds
-  const homeDrawAwayOdds = data.odds.find(
-    (oddsItem) => oddsItem.type === "HomeDrawAway",
-  )?.odds;
-
-  const isStarted = data.status_short !== "NS";
+export default function MatchComponent({
+  data,
+}: {
+  data: MatchComponentProps;
+}) {
+  const isStarted = data.minutes_elapsed !== -1;
 
   return (
-    <div className="mx-4 my-2 flex flex-col rounded-lg bg-neutral p-4 text-white">
+    <Link
+      to={`/bet/match/${data.fixture_id}`}
+      className="mx-4 my-2 flex flex-col rounded-lg bg-neutral p-4 text-white"
+    >
       <div className="mb-4 flex items-center justify-between">
         <p className="text-center text-sm text-gray-400">
           <b>{formatDate(data.fixture_date)}</b>
@@ -63,12 +58,11 @@ export default function MatchComponent({ data }: MatchComponentProps) {
             {isStarted ? data.home_goals : "-"} :{" "}
             {isStarted ? data.away_goals : "-"}
           </p>
-          {data.home_penalty_goals !== undefined &&
-            data.away_penalty_goals !== undefined && (
-              <p className="text-sm text-gray-400">
-                (Pens: {data.home_penalty_goals} - {data.away_penalty_goals})
-              </p>
-            )}
+          {data.home_penalties !== -1 && data.away_penalties !== -1 && (
+            <p className="text-sm text-gray-400">
+              (Pens: {data.home_penalties} - {data.away_penalties})
+            </p>
+          )}
         </div>
 
         <div className="flex items-center justify-end space-x-2">
@@ -83,42 +77,23 @@ export default function MatchComponent({ data }: MatchComponentProps) {
 
       <div className="mt-4 flex items-center justify-between">
         <StatusDisplay data={data} />
-        {homeDrawAwayOdds && (
-          <div className="flex items-center space-x-4 text-sm text-gray-300">
-            <b>Odds:</b>
-            <p>Home: {homeDrawAwayOdds.home}</p>
-            <p>Draw: {homeDrawAwayOdds.draw}</p>
-            <p>Away: {homeDrawAwayOdds.away}</p>
-          </div>
-        )}
       </div>
-    </div>
+    </Link>
   );
 }
 
-interface Data {
-  status_long: string;
-  status_short: string;
-  status_elapsed: string;
-}
-
-interface Props {
-  data: Data;
-}
-
-function StatusDisplay({ data }: Props) {
-  const isStarted = data.status_short !== "NS";
+function StatusDisplay({ data }: { data: MatchComponentProps }) {
+  const isStarted = data.minutes_elapsed !== -1;
 
   return (
     <p className={`text-sm ${isStarted ? "text-green-500" : "text-gray-400"}`}>
-      {data.status_long} ({data.status_short})
-      {isStarted && ` - ${data.status_elapsed}`}
+      {isStarted && `${data.minutes_elapsed}`}
     </p>
   );
 }
 
 /**
- * Function takes match date and returns a formated string
+ * Function takes match date and returns a formatted string
  * @param date
  */
 function formatDate(date: string | Date): string {
