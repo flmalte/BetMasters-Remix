@@ -22,7 +22,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const dateOfBirth = formData.get("dateOfBirth");
 
   const response = await axios.post(
-    backendUrl + "/register",
+    backendUrl + "/user/register",
     {},
     {
       params: {

@@ -6,7 +6,7 @@ import { backendUrl } from "~/api/betMasters";
 
 export const meta: MetaFunction = () => {
   return [
-    { title: "BetMasters Profile" },
+    { title: "BetMasters Transactions" },
     { name: "description", content: "Welcome to BetMasters!" },
   ];
 };
@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const auth = await requireAuthCookie(request);
 
   // Gets user account balance
-  const response = await axios.get(backendUrl + "/getBalance", {
+  const response = await axios.get(backendUrl + "/transaction/get-balance", {
     params: {
       jwtToken: auth.jwt,
       email: auth.email,
@@ -48,6 +48,7 @@ export default function Profile() {
             <button className="btn join-item">Deposit</button>
           </div>
         </fetcher.Form>
+
         <fetcher.Form action="/withdraw" method="post" className="">
           <div className="join">
             <input

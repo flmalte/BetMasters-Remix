@@ -18,7 +18,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const password = formData.get("password");
 
   const response = await axios.post(
-    backendUrl + "/login",
+    backendUrl + "/user/login",
     {},
     {
       params: {

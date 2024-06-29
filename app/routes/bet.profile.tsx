@@ -1,5 +1,5 @@
 import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
-import { useLoaderData, json, useFetcher } from "@remix-run/react";
+import { useLoaderData, json } from "@remix-run/react";
 import { requireAuthCookie } from "~/utils/auth";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
@@ -15,7 +15,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
   const auth = await requireAuthCookie(request);
 
   // Gets user account balance
-  const response = await axios.get(backendUrl + "/getBalance", {
+  const response = await axios.get(backendUrl + "/transaction/get-balance", {
     params: {
       jwtToken: auth.jwt,
       email: auth.email,
