@@ -3,12 +3,14 @@ import { backendUrl } from "~/api/betMasters";
 import { authCookie, requireAuthCookie } from "~/utils/auth";
 import { ActionFunctionArgs, redirect } from "@remix-run/node";
 
-// Handles deletion of user account
+/**
+ * Handles user account deletion.
+ */
 export async function action({ request }: ActionFunctionArgs) {
   const auth = await requireAuthCookie(request);
 
   /*Tells the backend to delete the account*/
-  const response = await axios.delete(backendUrl + "/user/modify/delete", {
+  await axios.delete(backendUrl + "/user/modify/delete", {
     params: {
       email: auth.email,
       jwtToken: auth.jwt,

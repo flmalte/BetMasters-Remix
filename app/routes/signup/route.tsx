@@ -12,8 +12,12 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-// Action function to handle form submission
+/**
+ * Action function to handle form submission
+ * @param request
+ */
 export async function action({ request }: ActionFunctionArgs) {
+  // Extract data from request
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
@@ -56,6 +60,11 @@ export default function Signup() {
   const [passwordError, setPasswordError] = useState<string>("");
   const [dateOfBirthError, setDateOfBirthError] = useState<string>("");
 
+  /**
+   * Validates an email address.
+   * @param {string} email - The email address to validate.
+   * @returns {string} An error message if invalid, or an empty string if valid.
+   */
   function validateEmail(email: string): string {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
@@ -64,7 +73,11 @@ export default function Signup() {
     return "";
   }
 
-  // Validates the password and returns an error
+  /**
+   * Validates a password.
+   * @param {string} pwd - The password to validate.
+   * @returns {string} An error message if invalid, or an empty string if valid.
+   */
   function validatePassword(pwd: string): string {
     const passwordRegex =
       /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\\da-zA-Z]).{8,50}$/;
@@ -74,7 +87,11 @@ export default function Signup() {
     return "";
   }
 
-  // Validates the age and returns an error if age too young
+  /**
+   * Validates the user's age based on their date of birth.
+   * @param {string} dob - The date of birth to validate.
+   * @returns {string} An error message if underage, or an empty string if valid.
+   */
   function validateAge(dob: string): string {
     const age = calculateAge(dob);
 
@@ -85,6 +102,7 @@ export default function Signup() {
     return "";
   }
 
+  // useEffect hooks for validation, reruns if variable changes
   useEffect(() => {
     if (email) setEmailError(validateEmail(email));
   }, [email]);

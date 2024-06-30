@@ -12,6 +12,7 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  /*Gets user data from authCookie*/
   const auth = await requireAuthCookie(request);
 
   // Gets user account balance
@@ -30,7 +31,8 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Profile() {
-  const { auth, balance } = useLoaderData<typeof loader>(); // receives data returned by loader
+  // Receives data returned by loader
+  const { auth, balance } = useLoaderData<typeof loader>();
 
   return (
     <div className="max-w-3xl overflow-x-hidden">
@@ -46,12 +48,18 @@ export default function Profile() {
   );
 }
 
+/**
+ * Renders a button that opens a modal for account deletion.
+ * @constructor
+ */
 function DeleteProfileModal() {
+  /*Fetcher allows posting forms to any route*/
   const fetcher = useFetcher();
   return (
     <>
       <button
         className="btn btn-outline btn-error"
+        /*Opens modal on click*/
         onClick={() =>
           document.getElementById("delete_profile_modal").showModal()
         }

@@ -1,5 +1,5 @@
 import { ActionFunctionArgs, MetaFunction, redirect } from "@remix-run/node";
-import { Form, json, Link, useActionData } from "@remix-run/react";
+import { Form, json, Link } from "@remix-run/react";
 import axios from "axios";
 import { backendUrl } from "~/api/betMasters";
 import { authCookie } from "~/utils/auth";
@@ -11,8 +11,12 @@ export const meta: MetaFunction = () => {
   ];
 };
 
-// Action function to handle form submission
+/**
+ * Action function to handle form submission
+ * @param request
+ */
 export async function action({ request }: ActionFunctionArgs) {
+  // Extract data from request
   const formData = await request.formData();
   const email = formData.get("email");
   const password = formData.get("password");
@@ -35,6 +39,7 @@ export async function action({ request }: ActionFunctionArgs) {
       jwt: response.data.jwtToken,
     };
 
+    // Redirects to /bet and saves auth information in authCookie
     return redirect("/bet", {
       headers: {
         "Set-Cookie": await authCookie.serialize(auth),
@@ -46,8 +51,6 @@ export async function action({ request }: ActionFunctionArgs) {
 }
 
 export default function Login() {
-  let actionData = useActionData<typeof action>();
-
   return (
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content flex-col lg:flex-row-reverse">

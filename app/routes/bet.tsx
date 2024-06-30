@@ -6,7 +6,9 @@ import { requireAuthCookie } from "~/utils/auth";
 import { LoaderFunctionArgs } from "@remix-run/node";
 
 /**
- * loader fetches the data on the server from backend api
+ * Loader function to fetch data from the backend API.
+ * @returns {Promise<Response>} A JSON response containing leagues and user balance.
+ * @throws {Response} Redirects to login page if user is not authenticated.
  */
 export async function loader({ request }: LoaderFunctionArgs) {
   /*makes everything inside /bet/ a protected route, if not logged in it redirects to the login page*/
@@ -31,7 +33,10 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ leagues, balance });
 }
 
-export default function _layout() {
+/**
+ * Renders a sidebar with league navigation and the main content area.
+ */
+export default function Bet() {
   const { leagues, balance } = useLoaderData<typeof loader>();
 
   return (
@@ -45,6 +50,7 @@ export default function _layout() {
         </Link>
 
         <ul className="space-y-2">
+          {/*Maps over the leagues object*/}
           {leagues.map((data) => (
             <li key={data.name}>
               <NavLink
@@ -72,12 +78,21 @@ export default function _layout() {
   );
 }
 
-function NavBar({ balance }) {
+type NavBarProps = {
+  balance: number;
+};
+
+/**
+ * Renders the NavBar including menu and balance.
+ * @param balance Takes the user account balance as parameter.
+ */
+function NavBar({ balance }: NavBarProps) {
   return (
     <div className="navbar sticky top-0 w-full bg-base-100">
       <div className="flex-1"></div>
       <div className="flex-none gap-2">
         <span className="font-bold text-success">{balance} €</span>
+        {/* User dropdown menu */}
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -94,6 +109,7 @@ function NavBar({ balance }) {
             tabIndex={0}
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 drop-shadow-lg"
           >
+            {/*Dropdown menu items*/}
             <li>
               <Link to="/bet/profile">Account</Link>
             </li>

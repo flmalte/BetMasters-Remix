@@ -16,6 +16,7 @@ export const meta: MetaFunction = () => {
  * @param params takes leagueId from url as param
  */
 export async function loader({ params }: LoaderFunctionArgs) {
+  // Recives matches from the backend
   const response = await axios.get(
     backendUrl + "/football/v2/fixtures/by-league-and-season",
     {
@@ -45,12 +46,13 @@ export async function loader({ params }: LoaderFunctionArgs) {
     headers: {
       "Cache-Control":
         "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
-    }, // Adds Incremental Static Regeneration, needs to be changed later
+    }, // Adds Incremental Static Regeneration for response caching.
   });
 }
 
-export default function _index() {
-  const data = useLoaderData<typeof loader>(); // receives data returned by loader
+export default function League() {
+  // Receives data from loader
+  const data = useLoaderData<typeof loader>();
 
   return (
     <div className="my-4 space-y-4">

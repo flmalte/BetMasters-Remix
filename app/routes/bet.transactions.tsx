@@ -35,7 +35,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     },
   });
 
-  // Extracting the balance from the response data
+  // Extracting the data from the response
   const balance = balanceResponse.data.balance;
   const history = historyResponse.data;
 
@@ -43,10 +43,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function Profile() {
+  /*Recieves data from the loader*/
   const { balance, history } = useLoaderData<typeof loader>(); // receives data returned by loader
   const fetcher = useFetcher();
 
-  // Function to determine transaction type text
+  /**
+   * Function to determine transaction type text
+   * @param type Takes the type as number
+   */
   const getTransactionTypeText = (type: number) => {
     switch (type) {
       case 1:
@@ -61,7 +65,7 @@ export default function Profile() {
   return (
     <div className="max-w-3xl overflow-x-hidden">
       <div className="my-4 space-y-4">
-        <p>Balance: {balance}</p>
+        <p className="text-xl font-bold">Balance: {balance}</p>
 
         <fetcher.Form action="/deposit" method="post" className="">
           <div className="join px-1">
@@ -89,6 +93,7 @@ export default function Profile() {
         <div className="mt-8">
           <h2 className="mb-4 text-xl font-bold">Transaction History</h2>
           <div className="overflow-x-auto">
+            {/*Renders a table if a transaction history exists*/}
             {Array.isArray(history) && history.length > 0 ? (
               <table className="table table-zebra">
                 {/* head */}
@@ -102,7 +107,8 @@ export default function Profile() {
                   </tr>
                 </thead>
                 <tbody>
-                  {history.map((transaction: any, index: number) => (
+                  {/*Maps over the history object*/}
+                  {history.map((transaction, index) => (
                     <tr key={transaction.transaction_id}>
                       <th>{index + 1}</th>
                       <td>{transaction.transaction_id}</td>
@@ -122,6 +128,7 @@ export default function Profile() {
                 </tbody>
               </table>
             ) : (
+              /*Renders this text if no transaction history exists*/
               <p>No transaction history available.</p>
             )}
           </div>

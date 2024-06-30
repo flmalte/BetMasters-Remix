@@ -1,5 +1,6 @@
 /**
  * Calculates the age based on the birthdate
+ * @see https://stackoverflow.com/questions/4060004/calculate-age-given-the-birth-date-in-the-format-yyyymmdd
  * @param dateString takes birthdate as input
  */
 export function calculateAge(dateString: string): number {

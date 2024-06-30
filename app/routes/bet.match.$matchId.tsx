@@ -24,7 +24,7 @@ export const meta: MetaFunction = () => {
 };
 
 /**
- * loader fetches the data on the server from backend api
+ * Loader fetches the data on the server from backend api
  * @param params takes match from url as param
  */
 export async function loader({ params }: LoaderFunctionArgs) {
@@ -51,13 +51,16 @@ export async function loader({ params }: LoaderFunctionArgs) {
 }
 
 export async function action({ request, params }: ActionFunctionArgs) {
+  /*Recives data from authCookie*/
   const auth = await requireAuthCookie(request);
 
+  /*Extract data from form*/
   const formData = await request.formData();
   const amount = formData.get("amount");
   const selectedBet = formData.get("selectedBet");
 
   try {
+    // Gets data from backend
     const response = await axios.post(
       backendUrl + "/betting/v2/place",
       {},
@@ -84,14 +87,19 @@ export async function action({ request, params }: ActionFunctionArgs) {
 }
 
 export default function _index() {
+  /*Receives data returned from loader*/
   const { data, odds } = useLoaderData<typeof loader>(); // receives data returned by loader
+
   const navigate = useNavigate();
+
+  /*Receives data returned from action function*/
   const actionData = useActionData<typeof action>();
 
   return (
     <div className="my-4 space-y-4">
       <button
         className="btn btn-circle ml-4"
+        /*Navigates back one page on click*/
         onClick={() => {
           navigate(-1);
         }}
@@ -118,6 +126,8 @@ export default function _index() {
       </div>
       <div className="mx-4 rounded-lg bg-neutral p-4 text-white">
         <h2 className="mb-2 text-lg font-bold">Place a Bet</h2>
+
+        {/*Posts form to this routes action function*/}
         <Form method="post">
           <input type="hidden" name="fixtureID" value={data.fixture_id} />
           <div className="mb-4">
@@ -151,6 +161,7 @@ export default function _index() {
             Place Bet
           </button>
         </Form>
+        {/*Renders action function response*/}
         {actionData && (
           <div
             className={`mt-4 p-4 ${actionData.success ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"} rounded-md`}

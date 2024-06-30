@@ -12,9 +12,10 @@ export const meta: MetaFunction = () => {
 };
 
 export async function loader({ request }: LoaderFunctionArgs) {
+  // Gets auth data from authCookie
   const auth = await requireAuthCookie(request);
 
-  // Gets user account balance
+  // Gets user account balance from the backend
   const historyResponse = await axios.get(backendUrl + "/betting/v2/get-bets", {
     params: {
       jwtToken: auth.jwt,
@@ -29,9 +30,14 @@ export async function loader({ request }: LoaderFunctionArgs) {
 }
 
 export default function BetHistory() {
+  // Receives the history returned from the loader
   const { history } = useLoaderData<typeof loader>();
 
-  const getStatusColor = (status: string) => {
+  /**
+   * Gets the text color tailwind class based on the status, returns it as string.
+   * @param status Receives the status as parameter.
+   */
+  function getStatusColor(status: string): string {
     switch (status.toLowerCase()) {
       case "won":
         return "text-success";
@@ -42,17 +48,19 @@ export default function BetHistory() {
       default:
         return "text-info";
     }
-  };
+  }
 
   return (
     <div className="mx-auto max-w-5xl overflow-x-hidden">
       <div className="my-4 space-y-4">
         <h2 className="mb-4 text-2xl font-bold">Bet History</h2>
         <div className="overflow-x-auto">
+          {/*Renders a table if a bet history exists*/}
           {Array.isArray(history) && history.length > 0 ? (
             <table className="table table-zebra w-full">
               <thead>
                 <tr>
+                  {/*Column titles*/}
                   <th></th>
                   <th>Fixture ID</th>
                   <th>Bet Type</th>
@@ -64,6 +72,7 @@ export default function BetHistory() {
                 </tr>
               </thead>
               <tbody>
+                {/*Maps over the history object*/}
                 {history.map((bet, index) => (
                   <tr key={bet.bet_id}>
                     <th>{index + 1}</th>
@@ -79,6 +88,7 @@ export default function BetHistory() {
               </tbody>
             </table>
           ) : (
+            /*Renders this text if no bet history exists*/
             <p>No bet history available.</p>
           )}
         </div>

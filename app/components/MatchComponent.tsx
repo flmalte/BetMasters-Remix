@@ -77,6 +77,12 @@ export default function MatchComponent({
   );
 }
 
+/**
+ * Displays the current status of the match.
+ *
+ * @param {MatchComponentProps} props.data - The match data to determine the status.
+ * @returns {JSX.Element} A React component showing the match status.
+ */
 function StatusDisplay({ data }: { data: MatchComponentProps }) {
   const isStarted = data.minutes_elapsed !== -1;
 
@@ -88,8 +94,10 @@ function StatusDisplay({ data }: { data: MatchComponentProps }) {
 }
 
 /**
- * Function takes match date and returns a formatted string
- * @param date
+ * Formats a given date string into a human-readable format.
+ *
+ * @param {string | Date} date - The date to format, either as a string or Date object.
+ * @returns {string} A formatted date string.
  */
 function formatDate(date: string | Date): string {
   const options: Intl.DateTimeFormatOptions = {
