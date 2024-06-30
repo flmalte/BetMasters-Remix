@@ -58,14 +58,6 @@ export async function action({ request, params }: ActionFunctionArgs) {
   const amount = formData.get("amount");
   const selectedBet = formData.get("selectedBet");
 
-  console.log(auth.uid);
-  console.log(auth.email);
-  console.log(auth.jwt);
-  console.log(amount);
-  console.log("WIN");
-  console.log(params.matchId);
-  console.log(selectedBet);
-
   try {
     const response = await axios.post(
       backendUrl + "/betting/place",

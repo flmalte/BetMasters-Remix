@@ -10,7 +10,7 @@ export async function action({ request }: ActionFunctionArgs) {
   const amount = formData.get("amount");
 
   await axios.post(
-    backendUrl + "/deposit",
+    backendUrl + "/transaction/deposit",
     {},
     {
       params: {
