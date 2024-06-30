@@ -28,21 +28,7 @@ export async function loader({ request }: LoaderFunctionArgs) {
     },
   });
 
-  const history = historyResponse.data;
-
-  return json({ history });
-}
-
-/**
- * Allows the user to claim their bets.
- *
- * This function is a Remix action function.
- */
-export async function action({ request }: ActionFunctionArgs) {
-  // Authenticate the user
-  const auth = await requireAuthCookie(request);
-
-  // Send deposit request to Backend
+  /*Claims bets on page load*/
   await axios.put(
     backendUrl + "/betting/v2/claim",
     {},
@@ -55,7 +41,9 @@ export async function action({ request }: ActionFunctionArgs) {
     },
   );
 
-  return null;
+  const history = historyResponse.data;
+
+  return json({ history });
 }
 
 export default function BetHistory() {
@@ -83,9 +71,7 @@ export default function BetHistory() {
     <div className="mx-auto max-w-5xl overflow-x-hidden">
       <div className="my-4 space-y-4">
         <h2 className="mb-4 text-2xl font-bold">Bet History</h2>
-        <form method="post">
-          <button className="btn btn-primary">Claim Bets</button>
-        </form>
+
         <div className="overflow-x-auto">
           {/*Renders a table if a bet history exists*/}
           {Array.isArray(history) && history.length > 0 ? (
