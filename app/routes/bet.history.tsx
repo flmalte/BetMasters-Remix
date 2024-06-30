@@ -1,4 +1,8 @@
-import { LoaderFunctionArgs, MetaFunction } from "@remix-run/node";
+import {
+  ActionFunctionArgs,
+  LoaderFunctionArgs,
+  MetaFunction,
+} from "@remix-run/node";
 import { useLoaderData, json, useFetcher } from "@remix-run/react";
 import { requireAuthCookie } from "~/utils/auth";
 import axios from "axios";
@@ -29,6 +33,31 @@ export async function loader({ request }: LoaderFunctionArgs) {
   return json({ history });
 }
 
+/**
+ * Allows the user to claim their bets.
+ *
+ * This function is a Remix action function.
+ */
+export async function action({ request }: ActionFunctionArgs) {
+  // Authenticate the user
+  const auth = await requireAuthCookie(request);
+
+  // Send deposit request to Backend
+  await axios.put(
+    backendUrl + "/betting/v2/claim",
+    {},
+    {
+      params: {
+        jwtToken: auth.jwt,
+        email: auth.email,
+        uid: auth.uid,
+      },
+    },
+  );
+
+  return null;
+}
+
 export default function BetHistory() {
   // Receives the history returned from the loader
   const { history } = useLoaderData<typeof loader>();
@@ -54,6 +83,9 @@ export default function BetHistory() {
     <div className="mx-auto max-w-5xl overflow-x-hidden">
       <div className="my-4 space-y-4">
         <h2 className="mb-4 text-2xl font-bold">Bet History</h2>
+        <form method="post">
+          <button className="btn btn-primary">Claim Bets</button>
+        </form>
         <div className="overflow-x-auto">
           {/*Renders a table if a bet history exists*/}
           {Array.isArray(history) && history.length > 0 ? (
