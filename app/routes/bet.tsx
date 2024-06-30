@@ -10,20 +10,29 @@ import { LoaderFunctionArgs } from "@remix-run/node";
  */
 export async function loader({ request }: LoaderFunctionArgs) {
   /*makes everything inside /bet/ a protected route, if not logged in it redirects to the login page*/
-  await requireAuthCookie(request);
+  const auth = await requireAuthCookie(request);
 
-  const response = await axios.get(backendUrl + "/leagues/supported");
+  const leaugueResponse = await axios.get(backendUrl + "/leagues/supported");
+  // Gets user account balance
+  const balanceResponse = await axios.get(
+    backendUrl + "/transaction/get-balance",
+    {
+      params: {
+        jwtToken: auth.jwt,
+        email: auth.email,
+        userId: auth.uid,
+      },
+    },
+  );
 
-  return json(response.data, {
-    headers: {
-      "Cache-Control":
-        "public, max-age=300, s-max-age=1, stale-while-revalidate=604800",
-    }, // Adds Incremental Static Regeneration
-  });
+  const leagues = leaugueResponse.data;
+  const balance = balanceResponse.data.balance;
+
+  return json({ leagues, balance });
 }
 
 export default function _layout() {
-  const data = useLoaderData<typeof loader>();
+  const { leagues, balance } = useLoaderData<typeof loader>();
 
   return (
     <div
@@ -36,7 +45,7 @@ export default function _layout() {
         </Link>
 
         <ul className="space-y-2">
-          {data.map((data) => (
+          {leagues.map((data) => (
             <li key={data.name}>
               <NavLink
                 to={`/bet/league/${data.id}`}
@@ -56,18 +65,19 @@ export default function _layout() {
         </ul>
       </div>
       <div className="w-full">
-        <NavBar />
+        <NavBar balance={balance} />
         <Outlet />
       </div>
     </div>
   );
 }
 
-function NavBar() {
+function NavBar({ balance }) {
   return (
     <div className="navbar sticky top-0 w-full bg-base-100">
       <div className="flex-1"></div>
       <div className="flex-none gap-2">
+        <span className="font-bold text-success">{balance} €</span>
         <div className="dropdown dropdown-end">
           <div
             tabIndex={0}
@@ -85,10 +95,13 @@ function NavBar() {
             className="menu dropdown-content menu-sm z-[1] mt-3 w-52 rounded-box bg-base-100 p-2 drop-shadow-lg"
           >
             <li>
-              <Link to="/bet/profile">Profile</Link>
+              <Link to="/bet/profile">Account</Link>
             </li>
             <li>
-              <Link to="/bet/transactions">Funds</Link>
+              <Link to="/bet/transactions">Transactions</Link>
+            </li>
+            <li>
+              <Link to="/bet/history">Bet History</Link>
             </li>
 
             <form method="post" action="/logout">

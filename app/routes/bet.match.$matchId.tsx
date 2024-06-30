@@ -60,17 +60,17 @@ export async function action({ request, params }: ActionFunctionArgs) {
 
   try {
     const response = await axios.post(
-      backendUrl + "/betting/place",
+      backendUrl + "/betting/v2/place",
       {},
       {
         params: {
           uid: auth.uid,
           email: auth.email,
           jwtToken: auth.jwt,
-          amount,
-          betType: "WIN",
-          fixtureID: params.matchId,
-          selectedBet,
+          amount: amount,
+          type: "WIN",
+          fixtureId: params.matchId,
+          prediction: selectedBet,
         },
       },
     );
