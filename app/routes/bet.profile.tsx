@@ -38,9 +38,9 @@ export default function Profile() {
     <div className="max-w-3xl overflow-x-hidden">
       <div className="my-4 space-y-4">
         <p>Email: {auth ? auth.email : "No user found"}</p>
-        <p>ID: {auth ? auth.uid : "No user found"}</p>
+        {/* <p>ID: {auth ? auth.uid : "No user found"}</p>
 
-        <p className="text-wrap">{auth ? auth.jwt : "No jwt found"}</p>
+        <p className="text-wrap">{auth ? auth.jwt : "No jwt found"}</p>*/}
         <p>Balance: {balance}</p>
         <DeleteProfileModal />
       </div>

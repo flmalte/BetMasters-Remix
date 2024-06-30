@@ -30,11 +30,11 @@ export async function action({ request }: ActionFunctionArgs) {
     {},
     {
       params: {
+        dob: dateOfBirth,
         email: email,
-        password: password,
         first_name: firstName,
         last_name: lastName,
-        dob: dateOfBirth,
+        password: password,
       },
     },
   );
